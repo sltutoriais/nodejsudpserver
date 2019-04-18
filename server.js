@@ -174,8 +174,8 @@ socket.on('message', function(message,rinfo) {
 	   break;
 	  
 	   case "MOVE_AND_ROTATE":
+	   
 	    //console.log('[INFO] MOVE_AND_ROTATE received !!! ');
-		//console.log('user: '+clientLookup[data.local_player_id].name+' moving to: '+data.position);
 		
 		if(clientLookup[data[1]])
 	   {
@@ -205,12 +205,11 @@ socket.on('message', function(message,rinfo) {
 	  break;
 	  
 	  case "ATACK":
-	    //console.log('[INFO] MOVE_AND_ROTATE received !!! ');
-		//console.log('user: '+clientLookup[data.local_player_id].name+' moving to: '+data.position);
-		
+	   
 	   if(clientLookup[data[1]])
 	   {
 	      clientLookup[data[1]].timeOut = 0;
+		  
 	      var pack = "UPDATE_ATACK"+','+clientLookup[data[1]].id;
 		 
 		  var msg_currentUser = new Buffer(pack);
@@ -248,18 +247,18 @@ socket.on('message', function(message,rinfo) {
 	       // se o target não perdeu todo seu health
 		     if(target.health - _damage > 0)
 			 {
-			   //console.log("player: "+target.name+"recebeu dano de: "+currentUser.name);
+			   //console.log("player: "+target.name+"received damage from: "+clientLookup[data[1]].name);
 			   //console.log(target.name+"health: "+ target.health);
-			   target.health -=_damage;//decrementa o health
+			   target.health -=_damage;//health decrement
 			 }
 			 //target death
 			 else
 			 {
-			    //if para evitar erros de duplicata
+			    //if not dead
                 if(!target.isDead)
                {				
 			   
-			     target.isDead = true;//marca o target como death
+			     target.isDead = true;// target now is dead
 				 target.kills = 0;
                  
 				 pack = "DEATH"+','+clientLookup[data[2]].id;
@@ -305,53 +304,6 @@ socket.on('message', function(message,rinfo) {
 	   
 	  break;  
 	  
-	  case "MOVE":
-	    //console.log('[INFO] MOVE received !!! ');
-		//console.log('user: '+clientLookup[data.local_player_id].name+' moving to: '+data.position);
-		
-	     clientLookup[data[1]].position = data[2]+','+data[3]+','+data[4];
-	  
-		 var pack = "UPDATE_MOVE"+','+clientLookup[data[1]].id+','+clientLookup[data[1]].position;
-		 
-		 var msg_currentUser = new Buffer(pack);
-		
-		 // send current user position in broadcast to all clients in game
-         clients.forEach( function(i) {
-		      
-			if(i.id != clientLookup[data[1]].id)
-		    {
-		         socket.send(msg_currentUser,
-                0,
-                msg_currentUser.length,
-                i.port,
-                i.address);
-			}
-	   });//END_forEach
-		 
-	  break;
-	  
-	  case "ROTATE":
-	   
-	     //console.log('user: '+clientLookup[data.local_player_id].name+' rotate to: '+data.rotation);
-	     clientLookup[data[1]].rotation = data[2]+','+data[3]+','+data[4]+','+data[5];
-	  
-		 var pack = "UPDATE_ROTATE"+','+clientLookup[data[1]].id+','+clientLookup[data[1]].rotation;
-		 
-		 var msg_currentUser = new Buffer(pack);
-		
-		 // send current user rotation in broadcast to all clients in game
-         clients.forEach( function(i) {
-		    if(i.id != clientLookup[data[1]].id)
-		    {
-		      socket.send(msg_currentUser,
-                0,
-                msg_currentUser.length,
-                i.port,
-                i.address);
-		    }
-	   });//END_forEach
-		 
-	  break;
 	  
 	  case "ANIMATION":
 	   
@@ -420,12 +372,12 @@ socket.on('message', function(message,rinfo) {
 });//END_SOCKET.ON
 
 //setup udp server port
-var port = 8081;
-var HOST = '0.0.0.0';
+var port = 3000;
+var HOST = '127.0.0.1';
 /* server listening 127.0.0.1:process.env.PORT or 127.0.0.1:port
  * socket.bind(PORT, HOST);
 */
-socket.bind(process.env.PORT||port);
+socket.bind(process.env.PORT||port,HOST);
 
 socket.on('listening',function(){
 
@@ -475,13 +427,13 @@ function DisconnectClientByTimeOut(id){
 			}
 		  };//END_FOR
 }
-//função para atualizar os prefabs de health presentes no mapa do game bem como atualizar a lista de best killers
+//function to update the players' timeOut
 function UpdateTimeOut() {
 
    /*
   console.log("update time out");
 
- // spawn currentUser udp client on clients in broadcast
+       //foreach client updates timeOut
          clients.forEach( function(i) {
 		    
 			if(clientLookup[i.id])
@@ -498,7 +450,7 @@ function UpdateTimeOut() {
 
 		  */
 }//END_SEND_UPDATES
-setInterval(UpdateTimeOut, 10000);//roda a função para respawnar os halths dos pontos vazios a cada 30 segundos
+setInterval(UpdateTimeOut, 10000);//updates of 30 in 30 seconds
 
 
 console.log("------- server is running -------");
