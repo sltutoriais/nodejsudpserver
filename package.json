@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "description": "udp server",
+  "main": "server.js",
+  "dependencies": {
+    "express": "4.16.0",
+    "shortid": "2.2.13"
+  
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "8.11.4",
+	"npm":"5.6.0"
+  },
+  "author": "SLTutoriais",
+  "license": "MIT"
+}
