@@ -122,8 +122,13 @@ socket.on('message', function(message,rinfo) {
 		  
 		  if(i.id != currentUser.id)
 		  {
+<<<<<<< HEAD
 		    var pack2 = "SPAWN_PLAYER"+':'+i.id+':'+i.name+':'+i.position+':'+i.avatar;
 		    var msg_client = new Buffer.from(response)(pack2);
+=======
+		    var pack2 = "SPAWN_PLAYER"+','+i.id+','+i.name+','+i.position+','+i.rotation;
+		    var msg_client = new Buffer.from(pack2);
+>>>>>>> 8092832c6affa4085ed3e2151b84c534a94d528a
 		    console.log('i.name: '+i.name);
 		    console.log('i.port: '+i.port);
 	        console.log('i.address: '+i.address);
