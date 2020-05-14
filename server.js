@@ -288,7 +288,7 @@ socket.on('message', function(message,rinfo) {
 		
 
 		  var pack = "UPDATE_PHYSICAL_DAMAGE"+':'+clientLookup[data[1]].id+':'+clientLookup[data[2]].id+
-		   ','+clientLookup[data[2]].health;
+		   ':'+clientLookup[data[2]].health;
 		  //console.log("pack: "+pack);
 		  var msg_currentUser = new Buffer.from(pack);
 		
@@ -396,7 +396,7 @@ console.log('UDP Server listening on '+ address.address+':'+address.port);
 function DisconnectClientByTimeOut(id){
 
 
- var pack = "USER_DISCONNECTED"+','+clientLookup[id].id;
+ var pack = "USER_DISCONNECTED"+':'+clientLookup[id].id;
 		 
 		 var msg_currentUser = new Buffer.from(pack);
 		
