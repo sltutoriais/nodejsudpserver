@@ -124,7 +124,7 @@ socket.on('message', function(message,rinfo) {
 		  {
 
 		    var pack2 = "SPAWN_PLAYER"+':'+i.id+':'+i.name+':'+i.position+':'+i.avatar;
-		    var msg_client = new Buffer.from(response)(pack2);
+		    var msg_client = new Buffer.from(pack2);
 
 		    console.log('i.name: '+i.name);
 		    console.log('i.port: '+i.port);
